@@ -1,0 +1,28 @@
+\begin{figure}[t]
+\centering
+\caption{An illustration of the AST for the simple expression 3 + (10 - 5).}
+\label{ast:ae}
+{
+    \begin{tikzpicture}[->,>=stealth', level/.style={sibling distance = 5cm/#1, level distance = 1.5cm}, scale=0.6,transform shape]
+    \node [treenode] {$Add$}
+    child
+    {
+        node [treenode] {$Num$(3)}
+    } 
+    child
+        {
+            node [treenode] {$Sub$} 
+            child
+            {
+                node [treenode] {$Num$(10)} 
+            }
+            child
+            {
+                node [treenode] {$Num$(5)} 
+            }
+        }
+;
+% ------------------------------------------------ put the text into subtree nodes
+\end{tikzpicture}
+}
+\end{figure}
