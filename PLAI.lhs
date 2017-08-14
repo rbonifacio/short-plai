@@ -2,7 +2,7 @@
 
 %include polycode.fmt 
 %options ghci -fglasgow-exts
-
+\usepackage{xspace}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
@@ -21,6 +21,7 @@
 \end{code}
 }
 
+\usepackage{amssymb,amsmath}
 
 \usepackage{mdframed}
 \usepackage{hyperref}
@@ -36,7 +37,13 @@
     version={4.0},
 ]{doclicense}
 
-\title{A Short (Haskell Based) Introduction to Programming 
+\newcommand{\lae}{\textsc{LAE}\xspace}
+\renewcommand{\ae}{\textsc{AE}\xspace}
+\renewcommand{\emph}[1]{{\color{blue}\textit{#1}}}
+
+\input{definition.tex}
+
+\title{A Short Introduction to Programming 
 Languages: Application and Interpretation} 
 
 \author{Rodrigo Bonif\'{a}cio}
