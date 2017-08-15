@@ -118,9 +118,9 @@ run the test suites, executing in the prompt \texttt{runTestTT tc1} and \texttt{
 The results must be as follows. 
 
 \begin{mdframed}[style=default]
- \eval{runTestTT tc1} 
+\noindent \eval{runTestTT tc1} 
 
- \eval{runTestTT tc2} 
+\noindent \eval{runTestTT tc2} 
 \end{mdframed} 
 
 What we have seen is actually quite remarkable, though its full power may not yet 

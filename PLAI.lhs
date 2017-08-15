@@ -37,6 +37,7 @@
     version={4.0},
 ]{doclicense}
 
+\newcommand{\bnf}{\texttt{BNF}}
 \newcommand{\lae}{\textsc{LAE}\xspace}
 \renewcommand{\ae}{\textsc{AE}\xspace}
 \renewcommand{\emph}[1]{{\color{blue}\textit{#1}}}
@@ -46,7 +47,7 @@
 \title{A Short Introduction to Programming 
 Languages: Application and Interpretation} 
 
-\author{Rodrigo Bonif\'{a}cio}
+\author{Rodrigo Bonif\'{a}cio, Luisa Fantin, Gabriel Lob\~{a}o, and Jo\~{a}o Sousa}
 
 \begin{document}
 

@@ -97,6 +97,7 @@ data LAE = Num Integer
     | Sub LAE LAE 
     | Let Id LAE LAE
     | Ref Id
+ deriving(Read, Show, Eq)
 \end{code} 
 
 The \texttt{Let} data constructor expects 
@@ -118,10 +119,10 @@ happens when we pass arguments to
 functions. For instance, let 
 $f(x,y) = x^3 + y^3$. Then 
 
-\begin{align*}
+\begin{eqnarray*}
 f(12,1) & = & 12^3 + 1^3 = 1728 + 1 = 1729 \\ 
 f(10,9) & = & 10^3 + 9^3 = 1000 + 729 = 1729   
-\end{align*} 
+\end{eqnarray*} 
 
 Nevertheless, it is a good idea to pin down 
 this operation precisely. 
@@ -410,5 +411,29 @@ so it halts with an error.
 \end{itemize}
 
 Please, considering the implementation of the \texttt{calc} function 
-for \ae, implement a new function \texttt{calc} for \lae. Consider 
+for \ae, implement a new function (also named \texttt{calc}) for \lae. Consider 
 the following test cases. 
+
+\begin{code}
+calc :: LAE -> Integer
+
+calc = undefined
+
+-- some HUnit test cases to better understand the calc semantics
+
+exp1, exp2, exp3, exp4 :: String 
+exp1 = "Num 5"
+exp2 = "Add (Num 5) (Num 5)"
+exp3 = "Let x (Add (Num 5) (Num 5)) (Add (Ref x) (Ref x))"
+exp4 = "Let x (Num 5) (Let y (Ref x) (Ref y))" 
+exp5 = "Let x (Num 5) (Let x (Ref x) (Ref x))"
+
+tc01 = TestCase (assertEqual "tc01" (calc (parse exp1)) 5) 
+tc02 = TestCase (assertEqual "tc02" (calc (parse exp2)) 10)
+tc03 = TestCase (assertEqual "tc03" (calc (parse exp3)) 20)  
+tc04 = TestCase (assertEqual "tc04" (calc (parse exp4)) 5)
+tc05 = TestCase (assertEqual "tc05" (calc (parse exp5)) 5)
+
+parse :: String -> LAE
+parse = read 
+\end{code}
