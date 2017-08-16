@@ -355,9 +355,7 @@ subst _ _ (Num n) = Num n
 subst x v (Add lhs rhs) = Add (subst x v lhs) (subst x v rhs)
 subst x v (Sub lhs rhs) = Sub (subst x v lhs) (subst x v rhs)
 subst x v (Let i e1 e2) = undefined 
-subst x v (Ref i) 
- | x == i = v
- | otherwise = Ref i
+subst x v (Ref i) = undefined
 \end{code} 
  
 The \texttt{subst} function is defined in terms of 
