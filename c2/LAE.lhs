@@ -2,8 +2,8 @@
 
 
 Even in a simple arithmetic language, we 
-sometimes euncounter repeated expressions. 
-For instance, the Newtoninan formula for the 
+sometimes encounter repeated expressions. 
+For instance, the Newtonian formula for the 
 gravitational force between two objects has a
 squared term in the denominator. We would 
 like to avoid redundant expressions: they are 
@@ -22,7 +22,7 @@ you have used so far: they are called \emph{variables}.
 We choose not to call them that because the term
 ``variable'' is semantically 
 charged: it implies that the value associated with the identifier 
-can change (\emph{vary}). Since our language inicially 
+can change (\emph{vary}). Since our language initially 
 won't offer any way of changing the associated value, 
 we use the more conservative term ``identifier''. 
 For now, they are therefore just names for computed constants. 
@@ -68,7 +68,7 @@ our language a new name: \lae, short for
 
 Notice that we have had to add two rules to the \textsc{BNF}: 
 one for associating values with identifiers and 
-another for acually using the identifiers. The nonterminal 
+another for actually using the identifiers. The nonterminal 
 \texttt{<Id>} stands for some suitable syntax for identifiers 
 (usually a sequence of alphanumeric characters). 
 
@@ -81,7 +81,7 @@ server this role admirably. Nevertheless, it
 is also interesting to introduce a new name 
 to the String type, to make clear the purpose of 
 identifying expressions. We choose the name \texttt{Id} 
-as synonimous to the \texttt{String} data type. Therefore, 
+as synonymous to the \texttt{String} data type. Therefore, 
 the data definition in Haskell is
 
 \begin{code}
@@ -109,7 +109,7 @@ of the identifier.
 
 \subsection{Defining Substitution}
 
-Withouth ceremony, we use the concept of 
+Without ceremony, we use the concept of 
 \emph{substitution} to explain how the 
 \texttt{Let} construct works. We are able to do 
 this because substitution is not unique to 
@@ -137,11 +137,11 @@ a value (such as 12 or \texttt{5}) in an expression
 Recall from the sequence of reductions above that 
 substitution is a part of, but not the 
 same as, calculating an answer for an expression 
-that has identifiers. Loocking back at the 
+that has identifiers. Looking back at the 
 sequence of steps in the 
 evaluation example above, some of them invoke substitution 
 while the rest are calculation as defined for \ae. 
-For now, we are first foing to pin down substitution. 
+For now, we are first going to pin down substitution. 
 Once we have done that, we will revisit the related 
 question of calculation. But it will take us a few tries 
 to get substitution right! 
@@ -157,7 +157,7 @@ in the expression body that have the name \texttt{$x$} with the
 named expression (in this case \texttt{$exp_1$}). 
 \end{mydef}
 
-Begining with the program
+Beginning with the program
 
 \texttt{Let x = 5 in x + x}
 
@@ -177,7 +177,7 @@ when there are no instances of the identifier. For instance,
 
 \texttt{Let x = 5 in 10 + 4} 
 
-\noindent the definition os substitution leads 
+\noindent the definition of substitution leads 
 to \texttt{Let x = 5 in 10 + 4}, since there are 
 no instances of x in the expression body. Now consider 
 
@@ -186,20 +186,20 @@ no instances of x in the expression body. Now consider
 \noindent 
 
 The rules reduce this to \texttt{Let x = 5 in 5 + Let 5 = 3 in 10}. 
-Huh? Our substitution rule converted a perfectly reasonable progam 
+Huh? Our substitution rule converted a perfectly reasonable program 
 (whose value is 15) into one that 
 isn't even syntactically legal, i.e., it would be rejected by a parser 
 because the program contains a \texttt{5} where the 
-the \bnf tells us to expect an identifier. We definetely don't 
+the \bnf tells us to expect an identifier. We definitely don't 
 want substitution to have such an effect! It's 
 obvious that the substitution algorithm is too naive. To state 
-the problem with the alforithm precisely, though, we 
+the problem with the algorithm precisely, though, we 
 need to introduce a little terminology. 
 
 
 \begin{mydef}[Binding Instance]{def:bindingInstance}
 A binding instance of an identifier is the 
-occurence of the identifier that gives it its 
+occurrence of the identifier that gives it its 
 value. In \lae, the \texttt{Id} position of a 
 \texttt{Let} expression is the only binding instance. 
 \end{mydef}
@@ -260,9 +260,9 @@ algorithm, however, converts this expression into
 \texttt{Let x = 5 in 5 + Let x = 3 in 5}, which, 
 when evaluated, yields \texttt{10}. 
 
-What whent wrong here? Our substitution algorithm 
+What went wrong here? Our substitution algorithm 
 respected binding instances, but not their 
-scopo. In the sample expression, the \texttt{Let} introdcues 
+scope. In the sample expression, the \texttt{Let} introduces 
 a new scope for the inner \texttt{x}. The scope of the 
 outer \texttt{x} is \emph{shadowed} or \emph{masked} 
 by the inner binding. Because substitution doesn't 
@@ -292,15 +292,15 @@ Once again, substitution has changed a correct program into
 an incorrect one! 
 
 Let's understand what went wrong. Why didn't we substitute 
-the inner \texttt{x}? Substitution hals at 
+the inner \texttt{x}? Substitution halts at 
 the \texttt{Let} because, by definition, every 
 \texttt{Let} introduces a new scope, which we said 
 should delimit substitution. But this 
 \texttt{Let} contains an instance of \texttt{x}, which we 
-very much want substituted! So shich is it---substitute 
-whithin nested scopes or not? Actually, the two examples 
+very much want substituted! So which is it---substitute 
+within nested scopes or not? Actually, the two examples 
 above should reveal that our latest definition 
-for substitution, which might have seemed sinsible at first 
+for substitution, which might have seemed sensible at first 
 blush, is too draconian: it rules out substitution 
 within \emph{any} nested scopes. 
 
@@ -319,7 +319,7 @@ named expression (in this case \texttt{$exp_1$}), except within
 \end{mydef}
  
 Finally, we have a version of substitution that works. A different, 
-more succint way of phrasing this definition is
+more succinct way of phrasing this definition is
 
 
 \begin{mydef}[Substitution, take 5]{def:substitution2}
@@ -334,9 +334,9 @@ the named expression (in this case, $exp_1$).
 \end{mydef}
 
 Recall that we are still defining substitution, not 
-evaluatoin. Substitution is just an algorithm 
+evaluation. Substitution is just an algorithm 
 defined over expressions, independent of any use in an 
-evaluator. It is the calculator's jbo to invoke substitution 
+evaluator. It is the calculator's job to invoke substitution 
 as many times as necessary to reduce a program down to an 
 answer. That is, substitution simply converts 
 \texttt{Let x = 5 in x + Let y = 3 in x} into 
@@ -348,8 +348,8 @@ of a function.
 \begin{code}
 -- substitutes the first argument (x) by the second argument (v) 
 -- in the free occurrences of the let expression body (the third 
--- argument of the function). the resulting expression mustnot have 
--- any free ocurrence of the first argument.  
+-- argument of the function). the resulting expression must not have 
+-- any free occurrence of the first argument.  
 subst :: Id -> LAE -> LAE -> LAE 
 subst _ _ (Num n) = Num n
 subst x v (Add lhs rhs) = Add (subst x v lhs) (subst x v rhs)
@@ -368,7 +368,7 @@ is an expression like \texttt{Add e1 e2} or
 or a \texttt{Sub} expression, respectively, though 
 having as sub expressions recursive calls to the 
 \texttt{subst} function on their respective 
-sub expressinos \texttt{e1} and \texttt{e2}. Based on 
+sub expressions \texttt{e1} and \texttt{e2}. Based on 
 the previous definitions, you should implement 
 the case for \texttt{subst} on \texttt{Let} expressions. 
 This is the most interesting case. Finally, 
@@ -385,7 +385,7 @@ is no substitution to perform in this case.
 
 We have finally defined substitution, but we still 
 have not specified how we will use it to reduce 
-expressinons to answers. To do this, we must 
+expressions to answers. To do this, we must 
 modify our calculator. Specifically, we must add 
 rules for our two new source language syntactic 
 constructs: \texttt{Let} and \texttt{Ref}. 
@@ -396,9 +396,9 @@ named expression and then substitutes identifier by its value
 in the body of the \texttt{Let} 
 expression. 
 
-\item How about identifiers? Wel any identifier that is in the scope of 
+\item How about identifiers? Well any identifier that is in the scope of 
 a \texttt{Let} expression must be replaced with a value when the 
-calculator encounters that indentifier's binding instance. Consequently, 
+calculator encounters that identifiers binding instance. Consequently, 
 the purpose statement of \emph{subst} said there would be no free 
 instances of the identifier given as an argument left in the 
 result. In other words, \emph{subst} replaces identifiers with 
