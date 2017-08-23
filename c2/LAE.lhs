@@ -422,9 +422,9 @@ calc = undefined
 exp1, exp2, exp3, exp4 :: String 
 exp1 = "Num 5"
 exp2 = "Add (Num 5) (Num 5)"
-exp3 = "Let x (Add (Num 5) (Num 5)) (Add (Ref x) (Ref x))"
-exp4 = "Let x (Num 5) (Let y (Ref x) (Ref y))" 
-exp5 = "Let x (Num 5) (Let x (Ref x) (Ref x))"
+exp3 = "Let \"x\" (Add (Num 5) (Num 5)) (Add (Ref \"x\") (Ref \"x\"))"
+exp4 = "Let \"x\" (Num 5) (Let \"y\" (Ref \"x\") (Ref \"y\"))"
+exp5 = "Let \"x\" (Num 5) (Let \"x\" (Ref \"x\") (Ref \"x\"))"
 
 tc01 = TestCase (assertEqual "tc01" (calc (parse exp1)) 5) 
 tc02 = TestCase (assertEqual "tc02" (calc (parse exp2)) 10)
