@@ -71,12 +71,12 @@ import Test.HUnit
 type Id = String 
 type Value = Integer
 
-data F1LAE = Num Integer
-           | Add F1LAE F1LAE
-           | Sub F1LAE F1LAE 
-           | Let Id F1LAE F1LAE
+data Exp = Num Integer
+           | Add Exp Exp
+           | Sub Exp Exp
+           | Let Id Exp Exp
            | Ref Id
-           | App Id F1LAE
+           | App Id Exp
  deriving(Read, Show, Eq)
 \end{code} 
 
@@ -89,7 +89,7 @@ that functions consume only one argument. A simple
 data definition captures this. 
 
 \begin{code}
-data FunDec = FunDec Id Id F1LAE 
+data FunDec = FunDec Id Id Exp
  deriving(Read, Show, Eq) 
 \end{code} 
 
@@ -106,11 +106,92 @@ call \emph{interp}---short for interpreter-rather than
 \emph{calc} to reflect the fact that our language 
 has grown beyond arithmetic. The interpreter must 
 consume two arguments: the expression to evaluate 
-and the set of known function declarations. Must of 
+and the set of known function declarations. Most of 
 the rules of \texttt{LAE} remain the same, 
 so we can focus on the new rule. 
 
 \begin{code}
-interp :: F1LAE -> [FunDec] -> Int 
+interp :: Exp -> [FunDec] -> Int 
 interp = undefined 
 \end{code} 
+
+The rule for an application first looks up 
+the named function. If this access succeeds, 
+then interpretation proceeds in the body 
+of the function after first substituting 
+its formal parameter with the (interpreted) 
+value of the actual parameter. We can 
+see the result using GHCi. 
+
+\subsection{The scope of substitution}
+
+Suppose we ask our interpreter to evaluate 
+the expression 
+
+\begin{code}
+app1 :: F1LAE
+app1 = App "f" (Num 10)
+\end{code}
+
+In the presence of the solitary function definition 
+
+\begin{code}
+f :: FunDec 
+f = FunDec "f" "n" (App "n" (Ref "n"))
+\end{code}
+
+What should happen? Should the interpreter try to substitute 
+the $n$ in the function position of the application 
+with the number $10$, than complains that no such function 
+can be found (or even that function lookup fundamentally 
+fails because the names of the functions must be identifiers, 
+not numbers)? Or should the interpreter decide that function 
+names and function arguments live in two different ``spaces'', 
+and let the context determines in which space to lookup a name? Languages 
+like Scheme take the former approach: the name of a function 
+can be bound to a value in a local scope, thereby rendering 
+the function inaccessible through that name. This later 
+strategy is known as employing namespaces and languages 
+like Common Lisp adopt it. 
+ 
+\subsection{The Scope of Function Definitions} 
+
+Suppose our \emph{definition list} contains multiple function 
+declarations. How do these interact with one another? 
+For instance, suppose we evaluate the following 
+input \texttt{eval app1 [g, h]}, where  
+
+\begin{code}
+app1 :: F1LAE
+app1 = Apply "f" (Num 5) 
+
+g :: FunDec 
+g = FunDec "g" "n" (App "h" (Add (Ref "n") (Num 5)))
+
+h :: FuncDec 
+h = FunDec "h" "m" (Sub (Ref "m") (Num 1))
+\end{code} 
+
+What does the mentioned evaluation do? The main expression 
+applies $g$ to $5$. The definition of $g$, in turn, invokes 
+function $h$. Should $g$ be able to invoke $h$? Should the 
+invocation fail because $h$ is defined after $g$ in the list 
+of definitions? What if there are multiple bindings 
+for a given function's name? We will expect this evaluation 
+to reduce to $9$. That is, we employ the more natural interpretation 
+that each function can ``see'' every function's definition, 
+and the natural assumption that each name is bound at most 
+once so we don't need to disambiguate between definitions. 
+It is, however, possible to define more sophisticated 
+scopes. 
+
+\begin{Exercise}
+If a function can invoke every defined function, that 
+means it can also invoke itself. This is currently of 
+limited value because our \texttt{F1LAE} language lacks 
+a harmonious way of terminating recursion. Implement a 
+simple conditional construct (\texttt{if0}) which succeeds 
+if the term in the first position evaluates to zero, 
+and write interesting recursive functions in this language.  
+\end{Exercise}  
+

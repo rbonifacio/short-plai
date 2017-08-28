@@ -2,9 +2,13 @@
 
 %include polycode.fmt 
 %options ghci -fglasgow-exts
+
 \usepackage{xspace}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepackage{exercise}
+\usepackage{syntax} 
+
 \pgfplotsset{compat=newest}
 \usetikzlibrary{shapes.geometric,arrows,fit,matrix,positioning}
 \tikzset

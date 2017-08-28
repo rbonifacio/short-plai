@@ -6,3 +6,4 @@ of functions, and a classification of
 functions. 
 
 %include F1LAE.lhs
+%include F2LAE.lhs

@@ -1,0 +1,13 @@
+*.log
+*.pdf
+*.hs~
+*.lhs~
+.gitignore~
+PLAI.aux	
+PLAI.out
+PLAI.ptb
+PLAI.tex
+c2/AE.lhs.bak
+c2/LAE.lhs.bak
+c3/F1LAE.lhs.bak
+c3/F2LAE.lhs.bak
