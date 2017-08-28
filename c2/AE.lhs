@@ -36,7 +36,7 @@ tc2 = TestCase (assertEqual "tc02" (calc (parse exp2)) 8)
 
 An arithmetic expression \texttt{AE} might be represented 
 using a notation named \emph{Backus-Naur Form} (BNF), after
-two early programming languages pionner. A BNF 
+two early programming languages pioneers. A BNF 
 description of rudimentary arithmetic looks like: 
 
 \begin{verbatim}
@@ -54,7 +54,7 @@ in the symbos \texttt{< \ldots >} is literal syntax. In Haskell,
 as well as in other programming languages, it is quite easy to 
 represent an abstract representation for arithmetic expressions 
 based on a \textsc{BNF} specification. Abstract representations 
-are independent of our choices to concretly represent arithmetic 
+are independent of our choices to concretely represent arithmetic 
 expressions (or other more advanced programming 
 language constructs) as strings of characters. For instance, we might 
 express an expression 3 + (10 - 5) in many different ways, for instance: 
@@ -68,7 +68,7 @@ add(3, sub(10, 5))
 All these forms of expressing the same arithmetic expression 
 could be \emph{parsed} to generate the same abstract 
 syntax tree (a possible alternative is shown in Figure~\ref{ast:ae}). That is, 
-aftert choosing an interesting concrete syntax for a language, 
+after choosing an interesting concrete syntax for a language, 
 a parser reads a program written according to the concrete 
 syntax and ouputs an instance of an abstract syntax tree (AST). We will 
 not give to much attention to concrete syntaxes and parsers in this 
@@ -79,8 +79,8 @@ function). We also have to define a \emph{data type} for representing the
 how similar with the \textsc{BNF} such a data representation 
 is (\texttt{Integer} is a primitive data type in Haskell). In this particular 
 case, we define a new data type (named \texttt{AE}) with three data constructors: 
-\texttt{Num}, \texttt{Add}. and \texttt{Sub}. The first constructor expetes an 
-Integer as argument, while the other two constructors expects two sub-expressions 
+\texttt{Num}, \texttt{Add} and \texttt{Sub}. The first constructor expects an 
+Integer as argument, while the other two constructors expect two sub-expressions 
 of type \texttt{AE}. Let's ignore some details about the \texttt{deriving} directive 
 right now, though it explains to the Haskell compiler / interpreter to automatically 
 implement support for reading an \texttt{AE} from a string, to show an instance of 
