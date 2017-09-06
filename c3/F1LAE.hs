@@ -1,26 +1,27 @@
 module F1LAE where 
 
+import Prelude hiding (lookup) 
 import Test.HUnit 
 
-type Id = String 
+type Var  = String 
+type Name = String
+type FArg = String
 
 data Exp = Num Integer
            | Add Exp Exp
            | Sub Exp Exp 
-           | Let Id Exp Exp
-           | Ref Id
-           | App Id Exp
+           | Let Var Exp Exp
+           | Ref Var
+           | App Name Exp
  deriving(Read, Show, Eq)
 
-data FunDec = FunDec Id Id Exp 
+data FunDec = FunDec Name FArg Exp 
  deriving(Read, Show, Eq) 
 
-double :: FunDec 
-double = FunDec "double" "x" (Add (Ref "x") (Ref "x"))
+-- define the operational semantics of our language
 
--- define a semantica operacional da linguagem
 interp :: Exp -> [FunDec] -> Integer 
-interp (Num n) decs        = n
+interp (Num n) _           = n
 interp (Add lhs rhs) decs  = interp lhs decs + interp rhs decs
 interp (Sub lhs rhs) decs  = interp lhs decs - interp rhs decs
 
@@ -32,9 +33,9 @@ interp (App n e) decs =
   let f = lookup n decs
   in case f of
       (Nothing) -> error "Function not declared"
-      (Just (FunDec m a b)) -> interp (subst a e b) 
+      (Just (FunDec m a b)) -> interp (subst a e b decs) decs  
 
-subst :: Id -> Exp -> Exp -> [FunDec]-> Exp
+subst :: Var -> Exp -> Exp -> [FunDec]-> Exp
 subst _ _ (Num n) _ = Num n
 subst x v (Add lhs rhs) ds = Add (subst x v lhs ds) (subst x v rhs ds)
 subst x v (Sub lhs rhs) ds = Sub (subst x v lhs ds) (subst x v rhs ds)
@@ -45,9 +46,16 @@ subst x v (Ref i) ds
   | x == i = v
   | otherwise = Ref i
 
+subst x v (App n a) decs = App n (subst x v a decs)
             
-lookup :: Id -> [FunDec] -> Maybe FunDec
+lookup :: Name -> [FunDec] -> Maybe FunDec
 lookup _ [] = Nothing 
-lookup f (fun@(FunDec n b):fs)
+lookup f (fun@(FunDec n a b):fs)
   | f == n = Just fun
   | otherwise = lookup f fs 
+
+
+-- samples.. 
+double :: FunDec 
+double = FunDec "double" "x" (Add (Ref "x") (Ref "x"))
+
