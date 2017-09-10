@@ -110,16 +110,19 @@ to apply. The corresponding abstract syntax is:
 module F2LAE where 
 
 type Id = String 
-type Arg = String 
+type Name = String
+type FormalArg = String 
 
-data FunDec = FunDec Id Arg Exp
+type Value = Exp 
+
+data FunDec = FunDec Name FormalArg Exp
   
 data Exp = Num Integer
           | Add Exp Exp
           | Sub Exp Exp 
           | Let Id Exp Exp
           | Ref Id
-          | App Id Exp 
+          | App Name Exp 
           | Lambda Id Exp
           | AppLambda Exp Exp 
 \end{code}
@@ -156,11 +159,11 @@ use explicit substitution, to offer a direct comparison with
 the interpreters discussed before. 
 
 \begin{code}
-interp :: Exp -> [FunDec] -> Exp 
+interp :: Exp -> [FunDec] -> Value 
 interp = undefined 
 \end{code}     
 
-\subsection{Making Let Expressions Redundant} 
+\section{Making Let Expressions Redundant} 
 
 Now that we have functions as first class citizens, we can combine 
 lambda abstractions and lambda applications to recover the behaviour 

@@ -7,3 +7,4 @@ functions.
 
 %include F1LAE.lhs
 %include F2LAE.lhs
+%include F3LAE.lhs

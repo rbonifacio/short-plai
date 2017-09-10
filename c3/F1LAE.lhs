@@ -69,6 +69,8 @@ module F1LAE where
 import Test.HUnit 
 
 type Id = String 
+type Name = String 
+type FormalArg = String
 type Value = Integer
 
 data Exp = Num Integer
@@ -76,7 +78,7 @@ data Exp = Num Integer
            | Sub Exp Exp
            | Let Id Exp Exp
            | Ref Id
-           | App Id Exp
+           | App Name Exp
  deriving(Read, Show, Eq)
 \end{code} 
 
@@ -89,7 +91,7 @@ that functions consume only one argument. A simple
 data definition captures this. 
 
 \begin{code}
-data FunDec = FunDec Id Id Exp
+data FunDec = FunDec Name FormalArg Exp
  deriving(Read, Show, Eq) 
 \end{code} 
 
@@ -111,7 +113,7 @@ the rules of \texttt{LAE} remain the same,
 so we can focus on the new rule. 
 
 \begin{code}
-interp :: Exp -> [FunDec] -> Int 
+interp :: Exp -> [FunDec] -> Value
 interp = undefined 
 \end{code} 
 
@@ -129,7 +131,7 @@ Suppose we ask our interpreter to evaluate
 the expression 
 
 \begin{code}
-app1 :: F1LAE
+app1 :: Exp
 app1 = App "f" (Num 10)
 \end{code}
 
@@ -159,16 +161,16 @@ like Common Lisp adopt it.
 Suppose our \emph{definition list} contains multiple function 
 declarations. How do these interact with one another? 
 For instance, suppose we evaluate the following 
-input \texttt{eval app1 [g, h]}, where  
+input \texttt{eval app2 [g, h]}, where  
 
 \begin{code}
-app1 :: F1LAE
-app1 = Apply "f" (Num 5) 
+app2 :: Exp
+app2 = App "f" (Num 5) 
 
 g :: FunDec 
 g = FunDec "g" "n" (App "h" (Add (Ref "n") (Num 5)))
 
-h :: FuncDec 
+h :: FunDec 
 h = FunDec "h" "m" (Sub (Ref "m") (Num 1))
 \end{code} 
 
@@ -184,6 +186,11 @@ and the natural assumption that each name is bound at most
 once so we don't need to disambiguate between definitions. 
 It is, however, possible to define more sophisticated 
 scopes. 
+
+\begin{Exercise}
+Implement the \texttt{interp} function as 
+specified above. 
+\end{Exercise} 
 
 \begin{Exercise}
 If a function can invoke every defined function, that 

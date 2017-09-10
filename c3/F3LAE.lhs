@@ -3,7 +3,7 @@
 Let's examine the process of interpreting the following small 
 program. 
 
-\begin{minipage}[t]{.5\textwidth}
+\begin{minipage}{.5\textwidth}
 \begin{verbatim}
 Let x = 3 
  in Let y = 4
@@ -11,11 +11,11 @@ Let x = 3
    in x + y + z
 \end{verbatim}
 \end{minipage}%
-\begin{minipage}[t]{.5\textwidth}
+\begin{minipage}{.5\textwidth}
 \begin{eqnarray*}
-& = & Let\ y = 4\ in\ Let\ z = 5\ in\ 3 + y + z\ (subst) 
-& = & Let\ z = 5\ in\ 3 + 4 + z\ (subst) 
-& = & 3 + 4 + 5\ (subst) 
+& = & Let\ y = 4\ in\ Let\ z = 5\ in\ 3 + y + z\ (subst) \\ 
+& = & Let\ z = 5\ in\ 3 + 4 + z\ (subst) \\
+& = & 3 + 4 + 5\ (subst) \\
 & = & 12\ (arithmetic)  
 \end{eqnarray*}
 \end{minipage}
@@ -88,4 +88,49 @@ scope resolution, its evaluation must result either
 in 7 (static scope) or 9 (dynamic scope). In the later 
 case, the value of $x$ within the function definition 
 depends on the context of application of $f$, not 
-its definition.  
+on the scope of its definition.
+
+That is, to properly defer substitution, the value of a 
+function should be not only its definition, but also 
+the substitutions that were due to be performed on 
+it. Therefore, we must define a new datatype for the interpreter's 
+return value, which attaches the definition-time repository 
+to every function value. Our \texttt{Value} datatype 
+is either a \emph{numeric value} or a \emph{closure}, 
+a kind of function definition that comes together 
+with the list of deferred substitutions that appear 
+until its definition. We call this constructed 
+value a \emph{closure} because it ``closes'' the 
+function body of lambda expressions 
+over the substitutions that are waiting to 
+occur. 
+
+\begin{code}
+data Value = NumValue Integer
+           | Closure FormalArg Exp DefrdSub  
+\end{code} 
+
+When the interpreter encounters a function 
+application, it must ensure that the function's 
+pending substitutions are not forgotten. It must 
+however, ignore the substitutions pending at the 
+location of the invocation, for that is 
+precisely what led us to dynamic instead of 
+static scope. It must instead use the substitutions 
+of the invocation location to convert the function 
+and argument into values, hope that the 
+function expression evaluated to a closure, then 
+proceed with evaluating the body of the 
+function employing the repository of 
+deferred substitutions stored in the closure. 
+
+\begin{Exercise}
+Implement the interpreter function for 
+F3LAE, considering the following 
+specification. 
+\end{Exercise} 
+
+\begin{code}
+interp :: Exp -> DefrdSub -> [FunDec] -> Value
+interp = undefined 
+\end{code}
