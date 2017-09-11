@@ -110,16 +110,19 @@ to apply. The corresponding abstract syntax is:
 module F2LAE where 
 
 type Id = String 
-type Arg = String 
+type Name = String
+type FormalArg = String 
 
-data FunDec = FunDec Id Arg Exp
+type Value = Exp 
+
+data FunDec = FunDec Name FormalArg Exp
   
 data Exp = Num Integer
           | Add Exp Exp
           | Sub Exp Exp 
           | Let Id Exp Exp
           | Ref Id
-          | App Id Exp 
+          | App Name Exp 
           | Lambda Id Exp
           | AppLambda Exp Exp 
 \end{code}
@@ -156,6 +159,22 @@ use explicit substitution, to offer a direct comparison with
 the interpreters discussed before. 
 
 \begin{code}
-interp :: Exp -> [FunDec] -> Exp 
+interp :: Exp -> [FunDec] -> Value 
 interp = undefined 
 \end{code}     
+
+\section{Making Let Expressions Redundant} 
+
+Now that we have functions as first class citizens, we can combine 
+lambda abstractions and lambda applications to recover the behaviour 
+of \texttt{Let} expressions as a special case. Every time we encounter 
+an expression of the form \texttt{Let var = named in body} we can 
+replace it with \texttt{$(\lambda var\ .\ body)\ named$} and obtain 
+the same effect. The result of this translation reduces some boilerplate 
+code that is necessary to interpret the application of lambda and 
+let expressions. 
+
+\begin{Exercise}
+Implement a pre-processor that performs this translation. 
+\end{Exercise} 
+
