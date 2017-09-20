@@ -69,7 +69,7 @@ data Exp = Num Integer
 our repository of deferred substitutions. 
 
 \begin{code}
-type DefrdSub = [(Id, Exp)] 
+type DefrdSub = [(Id, Value)] 
 \end{code} 
 
 Several situations must be considered when implementing 

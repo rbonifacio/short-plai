@@ -18,8 +18,10 @@ data Exp = Num Integer
           | App Id Exp 
           | Lambda Id Exp
           | AppLambda Exp Exp 
+  deriving(Show) 
 
-
+instance Eq Exp where
+  (==) e1 e2 = interp e1 == interp e2
 interp :: Exp -> [FunDec] -> Exp 
 interp (Num n) _              = Num n
 interp (Add l r) decs         = binOperation (+) l r decs 
@@ -38,8 +40,7 @@ interp (App n e) decs =
   in case f of
       (Nothing) -> error "Function not declared"
       (Just (FunDec m a b)) -> interp (subst a e b decs) decs  
-  
-  
+   
 subst :: Var -> Exp -> Exp -> [FunDec]-> Exp
 subst _ _ (Num n) _ = Num n
 subst x v (Add lhs rhs) ds = Add (subst x v lhs ds) (subst x v rhs ds)
@@ -76,3 +77,9 @@ binOperation op e1 e2 decs = Num (op n1 n2)
   (Num n2) = interp e2 decs
   
 
+
+-- | samples
+-- foo = FunDec "foo" "x" (Ref "y")
+-- interp  (Let "y" (Num 10) (App "foo" (Num 3))) [foo]
+
+inc = FunDec "inc" "x" (Add (Ref "x") (Num 1))
