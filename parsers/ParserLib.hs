@@ -22,8 +22,13 @@
 
 module ParserLib where
 
-import Prelude hiding (return, (>>=))
+
+import Prelude hiding (return, (>>=), (<*>))
 import Data.Char
+
+infix 7 >>= -- sequencing operator 
+infixl 5 <|> -- choice operator 
+infixl 5 <*> -- conditional operator 
 
 type Parser a = String -> [(a, String)]
 
@@ -61,8 +66,8 @@ m >>= f = \s -> case m s of
 -- | A parser for representing alternatives between two parsers (p and q).
 -- If p s succeeds with value res != [], then it returns res. Otherwise,
 -- if p s == [], then it returns q s.  
-alt :: Parser a -> Parser a -> Parser a
-alt p q = \s -> let res = p s in
+(<|>) :: Parser a -> Parser a -> Parser a
+p <|> q = \s -> let res = p s in
                 case res of
                   [] -> q s
                   otherwise -> res
@@ -73,14 +78,14 @@ alt p q = \s -> let res = p s in
 -- predicate pred :: a -> Bool. This parser might fail in two cases:
 -- (a) the parser fails
 -- (b) the predicate fails 
-conditional :: Parser a -> (a -> Bool) -> Parser a
-conditional p pred = p >>= \a -> if (pred a) then return a
-  else failure
+(<*>):: Parser a -> (a -> Bool) -> Parser a
+(<*>) p pred = p >>= \a -> if (pred a) then return a else failure
 
 -- | Applies a parser (p :: Parser a) zero or more times, until it fails;
 -- returning a Parser [a]. 
 many :: Parser a -> Parser [a]
-many p = (p >>= \v -> many p >>= \vs -> return (v : vs)) `alt` return [] 
+many p =  (p >>= \v -> many p >>= \vs -> return (v : vs))
+      <|> return [] 
 
 
 -- | Applies a parser (p :: Parser a) one or more times, until it fails;
@@ -92,11 +97,15 @@ many1 p = p >>= \v -> many p >>= \vs -> return (v : vs)
 
 -- | Parser that recognizes a specific letter. 
 char :: Char -> Parser Char
-char c = conditional item (== c)
+char c = (<*>) item (== c)
 
 -- | Parser that recognizes a digit 
 digit :: Parser Char
-digit = conditional item isDigit
+digit = (<*>) item isDigit
+
+-- | Parser that recognizes a letter.
+letter :: Parser Char
+letter = (<*>) item isLetter
 
 -- | Parser that recognizes a specific string 
 string :: String -> Parser String
