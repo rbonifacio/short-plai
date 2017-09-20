@@ -62,7 +62,8 @@ data Exp = Num Integer
          | Let Id Exp Exp 
          | App Name Exp 
          | Lambda FormalArg Exp
-         | LambdaApp Exp Exp 
+         | LambdaApp Exp Exp
+     deriving(Show, Eq)     
 \end{code} 
 
 \noindent though we have to declare a new type for representing 
