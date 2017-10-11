@@ -29,27 +29,27 @@ interp (Num n) ds decs     = NumValue n
     
 interp (Add e1 e2) ds decs = NumValue (v1 + v2) 
   where
-    Num v1 = interp e1 ds decs
-    Num v2 = interp e2 ds decs 
+    NumValue v1 = interp e1 ds decs
+    NumValue v2 = interp e2 ds decs 
 
 interp (Sub e1 e2) ds decs = NumValue (v1 - v2) 
   where
-    Num v1 = interp e1 ds decs
-    Num v2 = interp e2 ds decs 
+    NumValue v1 = interp e1 ds decs
+    NumValue v2 = interp e2 ds decs 
 
 interp (Let v e1 e2) ds decs = interp (LambdaApp (Lambda v e2) e1) ds decs
 
 interp (Ref v) ds decs =
-  let res = lookup v fst ds
+  let res = lookup v ds fst
   in case res of
     (Nothing)    -> error "variavel nao declarada"
     (Just (_, value)) -> value 
 
 interp (App n a) ds decs =
-  let res = lookup n (\(FunDec n _ _) -> n) decs
+  let res = lookup n decs (\(FunDec n _ _) -> n)
   in case res of
     (Nothing) -> error "variaval nao declarada"
-    (Just (Fundec _ fa body)) -> interp body [(fa, interp a ds decs)] decs 
+    (Just (FunDec _ fa body)) -> interp body [(fa, interp a ds decs)] decs 
 
 interp (Lambda a body) ds decs = Closure a body ds
 
@@ -60,10 +60,10 @@ interp (LambdaApp e1 e2) ds decs = interp body ds2 decs
     ds2 = (a,v2):ds0
   
 lookup :: Id -> [a] -> (a -> String) -> Maybe a
-lookup v [] _ = Nothing
+lookup _ [] _ = Nothing
 lookup v (x:xs) f 
  | v == f x = Just x
- | otherwise = lookup v f xs
+ | otherwise = lookup v xs f
 
 
 -- let x = 10
