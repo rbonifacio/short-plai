@@ -1,7 +1,7 @@
 \section{An Introduction to Functions}
 
 In the previous chapter, we have
-added identifiers and and the ability
+added identifiers and the ability
 to name expressions to the language.
 Much of the time, though, simply
 being able to name an expression isn't
@@ -29,7 +29,7 @@ f(x) & = & x + 3
 \end{eqnarray*}
 
 Having named and defined $f$, what do we do with it? The
-\texttt{LAE} program introduces \texttt{x} and than immediately
+\texttt{LAE} program introduces \texttt{x} and then immediately
 binds it to \texttt{5}. The way we bind a function's argument
 to a value is to apply it. Thus, it is as if we wrote:
 
@@ -164,8 +164,8 @@ For instance, suppose we evaluate the following
 input \texttt{eval app1 [g, h]}, where
 
 \begin{code}
-app1 :: F1LAE
-app1 = App "g" (Num 5)
+app2 :: Exp
+app2 = App "g" (Num 5)
 
 g :: FunDec
 g = FunDec "g" "n" (App "h" (Add (Ref "n") (Num 5)))
