@@ -7,6 +7,7 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{exercise}
+\usepackage{syntax}
 \usepackage{bussproofs}
 \usepackage{syntax}
 
