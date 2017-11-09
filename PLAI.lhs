@@ -7,7 +7,9 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{exercise}
-\usepackage{syntax} 
+\usepackage{syntax}
+\usepackage{bussproofs}
+\usepackage{syntax}
 
 \pgfplotsset{compat=newest}
 \usetikzlibrary{shapes.geometric,arrows,fit,matrix,positioning}
@@ -61,5 +63,6 @@ Languages: Application and Interpretation}
 %include preface.lhs
 %include c2/c2.lhs
 %include c3/c3.lhs 
+%include ctypes/ctypes.lhs
 
 \end{document}
