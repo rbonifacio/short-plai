@@ -1,15 +1,15 @@
 \section{Introduction to Types(in Haskell)}
 
 Differently from Scheme, Haskell is a \emph{statically typed
-programming language}, which means our language does the
+programming language}, which means this language does the
 type checking and the variable's type is known at compile time.
 This facilitates the detection of trivial bugs very early on.
 
-In most staticlly typed programming languages this means 
-the programmer must constantlly inform a variable's type.
-However, Haskell is equiped with a type inference mechanism,
-allowing the system itself to deduce a function's type.
-Supose we define a function "adds" and don't specify it's type:
+In most statically typed programming languages this means 
+the programmer must constantly inform the variable type.
+However, Haskell is equipped with a type inference mechanism,
+allowing the system itself to deduce a function type.
+Suppose we define a function "adds" and don't specify it's type:
 
 \begin{verbatim}
 Prelude> adds a b = a + b
@@ -23,8 +23,8 @@ Prelude> :t adds
 adds :: Num a => a -> a -> a
 \end{verbatim}
 
-It retruns simply that any numeric type "a" may be applied to this 
-particular function. This gives us flexibility, however if requiered 
+It returns simply that any numeric type "a" may be applied to this 
+particular function. This gives us flexibility, however if required 
 more specific typing, we must do it manually.
 
 Let's see:
@@ -34,7 +34,7 @@ adds :: Int -> Int -> Int
 adds a b = a + b
 \end{verbatim}
 
-Supose we define a function in our language:
+Suppose we define a function in our language:
 
 \begin{verbatim}
 inc = FunDec "inc" "x" (Add(Ref "x")(Num 1))
@@ -72,12 +72,12 @@ If we had expected an error and Haskell did not flag one(or vice versa),
 then the interpreter would be unfaithful to the intent of the interpreted
 language.
 
-Our compiler rejects that program. Due to Haskell beeing a \textit{strongly 
-typed programming language} it veryfies every term to match it's expected
+Our compiler rejects that program. Due to Haskell being a \textit{strongly 
+typed programming language} it verifies every term to match it's expected
 type.
 
 Rejecting the example above is pretty trivial. Let's think more broadly.
-Sometimes it does not seem much harder: for intance,
+Sometimes it does not seem much harder, for instance
 
 \begin{verbatim}
 interp(Let "f" (Lambda "x" (Add(Ref "x")(Num 1)))
@@ -106,14 +106,14 @@ Is this program valid? Clearly, it depends on whether or not \textit{f},
 when applied to 5, evaluates to a number. Since this expression may be
 used in many different contexts, we cannot know whether or not this is
 legal without examining each application, which in turn may depend on other
-substituitions, and so on. In short, it appears that we will need to run
+substitutions, and so on. In short, it appears that we will need to run
 the program just to determine whether \textit{f} is always bound to a function,
 and one that can accept numbers - but running the program is precisely what
 we're trying to avoid.
 
 We now commence the study of types and type systems, which are designed 
 to identify the abuse of types before executing a program. First, we need
-to buid an intuition for the problems that types can address, and the obstacles
+to build an intuition for the problems that types can address, and the obstacles
 that they face. Consider the following program:
 
 \begin{verbatim}
@@ -150,7 +150,7 @@ without an error, or it must accept programs that will error when executed.}\\
 
 While this is a problem in theory, what impact does this have on practice?
 Quite a bit, it turn out. In languages like Java, programmers \textit{think}
-they have the benefit of a type system, but infact many common programming
+they have the benefit of a type system, but in fact many common programming
 patterns force programmers to employ casts instead. Casts intentionally 
 subvert the type system and leave checking for execution time. This indicates
 that Java's evolution is far from complete. In contrast, most of the type 
@@ -170,7 +170,7 @@ People conventionally use the term \textit{type} to refer not just to any
 approximation, but one that is an abstraction of the set of values.
 
 A type labels every expression in the language, recording what kind of value
-evaluating that expression will yeld. That is, types describe invariants that
+evaluating that expression will yield. That is, types describe invariants that
 hold for all  executions of a program. They approximate this information in
 that they typically record only what \textit{kind} of value the expression 
 yields, not the precise value itself. For instance, types for a language we
@@ -191,14 +191,14 @@ all the information we need to reject the program without executing it.
 Note that we are careful to refer to \textit{valid} programs, but never \textit{correct}
 ones. Types do not ensure the correctness of a program. They only guarantee 
 that the program does not make certain kinds of errors. Many errors lie beyond 
-the ambit of a type system, however, and are therfore not caught by it. Many 
+the ambit of a type system, however, and are therefore not caught by it. Many 
 type systems will not, for instance, distinguish between a program that sorts
-values in ascending order drom one that sorts them in descending order, yet the
+values in ascending order from one that sorts them in descending order, yet the
 difference deterrn those two is usually critical for a program's overall correctness.
 
 \subsection{Type System Design Forces}
 
-Designing a type system invoves finding a careful balance between two competing
+Designing a type system involves finding a careful balance between two competing
 forces:
 
 \begin{enumerate}
@@ -213,7 +213,7 @@ buggy ones.
 \item It may incur greater computational expense.
 
 \item It may force the user to annotate parts of a program. Many programmers
-(cometimes unfairly) balk at writing anything beyond executable code, and may
+(sometimes unfairly) balk at writing anything beyond executable code, and may
 thus view the annotations as onerous.
 
 \item It may ultimately hit the limits os computational, an unsurpassable barrier.
