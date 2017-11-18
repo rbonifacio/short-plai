@@ -18,7 +18,7 @@ a collection of types, the corresponding judgments that ascribe
 types to expressions, and an algorithm to perform this ascription.
 For many languages a simple algorithm suffices, but as languages 
 get more sophisticated, devising this algorithm can become quite
-difficult, as we will see in owr chapter about Type Inference.}
+difficult, as we will see in the chapter about Type Inference.}
 There must be at least one type rule for every kind of syntactic
 construct so that, given a program, at least one type rule applies
 to every sub-term. Judgments are often recursive, determining an 
@@ -125,7 +125,7 @@ Equipped with these types, the problem of checking applications becomes easy:
 \end{prooftree}
 
 That is, if you provide an argument of the type the function is expecting, it
-will provide a value of the type it promises. Notice how the judicous use of 
+will provide a value of the type it promises. Notice how the judicious use of 
 the same type name $\tau_{1}$ and $\tau_{2}$ accurately captures the sharing
 we desire.
 
@@ -170,7 +170,7 @@ By the way, it would help to understand the status of terms like \textit{i} and 
 in these judgments. They are "variable" in the sense that they will be replaced by some
 program term: for instance, {Lambda (\textit{i}: $\tau_{1}$):$\tau_{2}$ \textit{b}} may be
 instantiated to {Lambda (\textit{x}: TInt): TInt \textit{x}}, with \textit{i} replaced by \textit{x},
-and so forth. But htey are not program variables; rather, they are variables that stand 
+and so forth. But they are not program variables; rather, they are variables that stand 
 for program text (including program variables). They are therefore called \textit{metavariables}.
 
 \subsection{How Type Judgmentsa Work}
@@ -193,11 +193,11 @@ We stack type judgments for this term as follows:
 \end{prooftree}
 
 This is a \textit{type judgment tree}.\footnote{If it doesn't look like a tree to you, it's because
-you've been in computer science too long and have forgoten that real trees grow upward, not downward.
+you've been in computer science too long and have forgotten that real trees grow upward, not downward.
 Botanically, however, most of these "trees" are really shrubs.}. Each node in the tree uses one of the
 type judgments to determine the type of an expression. At the leaves(the "tops") are, obviously, the
-judgments that do not have an antecedent (tecnically knows as the axioms); in this program, we only 
-use the axiom htat judges Ints. The other two nodes in the tree both use the judgment on addition. The 
+judgments that do not have an antecedent (technically knows as the axioms); in this program, we only 
+use the axiom that judges Ints. The other two nodes in the tree both use the judgment on addition. The 
 metavariables in the judgments (such as \textit{l} and \textit{r} for addition) are replaced here by
 actual expressions (such as 2, 5, 7 and (Add 5 7)): we can employ a judgment only when the pattern 
 matches consistently. Just as we begin evaluating in the empty environment, we begin type checking in 
@@ -227,7 +227,7 @@ is quite different from the set of judgments we would use to evaluate the progra
 "under the Lambda", i.e., we go into the body of the Lambda even if the function is never applied. In contrast,
 we would never evaluate the body of a function unless and until the function was applied to an actual parameter.
 
-\item Finally, let's see what the type judgments do wth a program that we know to contain a type error:
+\item Finally, let's see what the type judgments do with a program that we know to contain a type error:
 
 \begin{verbatim}
 verifyType(Add(ValueI 3)(Lambda("x", TInt) TInt (Ref "x")))
@@ -251,14 +251,14 @@ sub-expression must have a numeric type. First for the left child:
 \BinaryInfC{[ ]$\vdash$(Add 3 (Lambda (x: TInt): TInt x)): ???}
 \end{prooftree}
 
-As per the judgments we have defined, any function expression musthave an TArrow type:
+As per the judgments we have defined, any function expression must have an TArrow type:
 \begin{prooftree}
 \AxiomC{[ ]$\vdash$ 3: TInt}
 \AxiomC{[ ]$\vdash$ (Lambda(x: TInt): TInt x): TArrow ??? ???}
 \BinaryInfC{[ ]$\vdash$(Add 3 (Lambda (x: TInt): TInt x)): ???}
 \end{prooftree}
 
-This dows the type checker no good, however, because arrow types are distinct from numeric types, so the resulting
+This does the type checker no good, however, because arrow types are distinct from numeric types, so the resulting
 tree above does not match the form of the addition judgment(no matter what goes in place of the two ???'s). To match
 the addition the tree must have the form?
 
@@ -268,11 +268,11 @@ the addition the tree must have the form?
 \BinaryInfC{[ ]$\vdash$(Add 3 (Lambda (x: TInt): TInt x)): ???}
 \end{prooftree}
 
-Unfortunetely, we do not have any judgment that let us conclude that a syntactic function term can have a numeric type.
+Unfortunately, we do not have any judgment that let us conclude that a syntactic function term can have a numeric type.
 So this doesn't work either.
 
 In short, we cannot construct a legal type derivation tree for the original term. Notice that this is not the same as
-saying that the tree directly identifies an error: it does not. A type eror occurs when we are \textit{unable to construct
+saying that the tree directly identifies an error: it does not. A type error occurs when we are \textit{unable to construct
 a type judgment tree.}  
 
 This is subtle enough to bear repeating: To flag a program as erroneous, we must \textit{prove} that no type derivation 
@@ -283,10 +283,10 @@ that let us conclude that a syntactic function term can have a numeric type". Bu
 conclude this by carefully studying the structure of the judgments. A computer program might not b e so lucky, and get 
 stuck endlessly trying judgments!)
 
-This is why a set of type judgments alone does not suffice: what we're really intrested in is a type system that includes
+This is why a set of type judgments alone does not suffice: what we're really interested in is a type system that includes
 an algorithm for type-checking. For the set of judgments we've written here, and indeed for the ones we'll study initially,
-a simple top-down, syntax-directed algorithm sufices for (a) determining the type of each exprssion, and (b) concluding that
+a simple top-down, syntax-directed algorithm suffices for (a) determining the type of each expression, and (b) concluding that
 some expressions manifest type errors. As our type judgments get more sophisticated, we will need to develop more complex 
-algorithms to continue producing tracable and useful type systems.
+algorithms to continue producing traceable and useful type systems.
 
 
