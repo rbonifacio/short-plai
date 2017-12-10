@@ -6,17 +6,17 @@ type checking and the variable's type is known at compile time.
 This facilitates the detection of trivial bugs very early on.
 
 In most statically typed programming languages this means 
-the programmer must constantly inform the variable type.
+the programmer must constantly inform the types of variables and functions.
 However, Haskell is equipped with a type inference mechanism,
-allowing the system itself to deduce a function type.
+allowing the system itself to deduce function types.
 Suppose we define a function "adds" and don't specify it's type:
 
 \begin{verbatim}
 Prelude> adds a b = a + b
 \end{verbatim}
 
-If questioned about this particular function's type, our compiler
-will give us the most broad answer possible.
+When questioned about this particular function's type, our compiler
+gives us the broadest possible answer.
 
 \begin{verbatim}
 Prelude> :t adds
@@ -24,8 +24,8 @@ adds :: Num a => a -> a -> a
 \end{verbatim}
 
 It returns simply that any numeric type "a" may be applied to this 
-particular function. This gives us flexibility, however if required 
-more specific typing, we must do it manually.
+particular function. This gives us flexibility; however, if more
+specific typing is required, we must do it manually.
 
 Let's see:
 
@@ -64,7 +64,7 @@ Our interpreter will produce an error such as:
 \end{verbatim}
 
 The error above is an error at syntactic level, because the interpreter is
-checking for the correct use of it's internal representation. Suppose we
+checking for the correct use of its internal representation. Suppose we
 had divisions in the interpreted language, and the corresponding \textit{num/}
 procedure failed to check that the denominator was non-zero; then the
 interpreter's behavior would be that of Haskell's on division-by-zero.
@@ -73,7 +73,7 @@ then the interpreter would be unfaithful to the intent of the interpreted
 language.
 
 Our compiler rejects that program. Due to Haskell being a \textit{strongly 
-typed programming language} it verifies every term to match it's expected
+typed programming language} it verifies every term to match its expected
 type.
 
 Rejecting the example above is pretty trivial. Let's think more broadly.
@@ -93,9 +93,9 @@ interp(Let "f" (Lambda "x"
                 (Add (Num 3)(App (Ref "f")(Num 5))))[]
 \end{verbatim}
 
-is not. Here, simply substituting \textit{f} in the body seems to be enough. The
+is not. Here, simply replacing \textit{f} in the body seems to be enough. This
 problem does not quite reduce to the parsing problem that we had earlier,
-a function application is necessary to determine the program's validity.
+as a function application is necessary to determine the program's validity.
 But consider this program:
 
 \begin{verbatim}
@@ -137,7 +137,7 @@ Add(Num 3)(If0 (Num y))
 
 Unless we can read the user's mind, we have no way of knowing whether this
 program will execute without error. In general, even without involving the
-mystery of mathematical conjectures os the vicissitudes of users, we cannot
+mystery of mathematical conjectures or the vicissitudes of users, we cannot
 statically determine whether a program will halt with an error, because of
 the Halting Problem.
 
@@ -146,37 +146,37 @@ This highlights an important moral:\\
 \textit{ Type systems are always prey to the Halting Problem. Consequently,
 a type system for a general-purpose language must always either over or
 under-approximate: either it must reject programs that might have run
-without an error, or it must accept programs that will error when executed.}\\
+without an error, or it must accept programs that will result in an error when executed.}\\
 
 While this is a problem in theory, what impact does this have on practice?
-Quite a bit, it turn out. In languages like Java, programmers \textit{think}
+Quite a bit, it turns out. In languages like Java, programmers \textit{think}
 they have the benefit of a type system, but in fact many common programming
 patterns force programmers to employ casts instead. Casts intentionally 
 subvert the type system and leave checking for execution time. This indicates
 that Java's evolution is far from complete. In contrast, most of the type 
-problems of Java are not manifested in a language like ML, but its type systems
+problems of Java are not manifested in a language like ML; yet, ML's type system
 still holds a few (subtler) lurking problems. In short, there is still much to
 do before we can consider type system design a solved problem.
 
 \subsection{What Are Types?}
 
 A \textit{type} is any property of a program that we can establish without
-executing the program. In particular types capture the intuition above that
+executing the program. In particular, types capture the intuition above that
 we would like to predict a program's behavior without executing it. Of course,
 given a general-purpose programming language, we cannot predict its behavior
-without execution(think of the user input example, for instance). So any static
+without execution(think of user inputs, for instance). So any static
 prediction of behavior must necessarily be an approximation of what happens.
 People conventionally use the term \textit{type} to refer not just to any
-approximation, but one that is an abstraction of the set of values.
+approximation, but to one that is an abstraction of the set of values.
 
 A type labels every expression in the language, recording what kind of value
 evaluating that expression will yield. That is, types describe invariants that
-hold for all  executions of a program. They approximate this information in
+hold for all executions of a program. They approximate this information in
 that they typically record only what \textit{kind} of value the expression 
 yields, not the precise value itself. For instance, types for a language we
 have seen so far might include \texttt{number} and \texttt{function}. The 
-operator + consumes only values of type \texttt{number}, thereby rejecting a 
-program of the form
+operator + consumes only values of type \texttt{number}, thereby
+rejecting a program of the form
 
 \begin{verbatim}
 Add (Num 3) (Lambda "x" (Ref "x"))
@@ -194,7 +194,7 @@ that the program does not make certain kinds of errors. Many errors lie beyond
 the ambit of a type system, however, and are therefore not caught by it. Many 
 type systems will not, for instance, distinguish between a program that sorts
 values in ascending order from one that sorts them in descending order, yet the
-difference deterrn those two is usually critical for a program's overall correctness.
+difference between those two is usually critical for a program's overall correctness.
 
 \subsection{Type System Design Forces}
 
@@ -216,7 +216,7 @@ buggy ones.
 (sometimes unfairly) balk at writing anything beyond executable code, and may
 thus view the annotations as onerous.
 
-\item It may ultimately hit the limits os computational, an unsurpassable barrier.
+\item It may ultimately hit the limits of computation, an unsurpassable barrier.
 (Often, designers can surpass this barrier by changing the problem slightly, though
 this usually moves the task into one of the three categories above.)
 \end{itemize}
@@ -230,7 +230,7 @@ sometimes has this flavor. A powerful type system such as that of ML, however,
 is a pleasure to use. ML programmers, for instance, claim that programs that 
 type correctly often work correctly within very few development iterations.
 
-Types that have not been subverted(by, for instance, casts in Java) perform
+Types that have not been subverted (by, for instance, casts in Java) perform
 several valuable roles:
 \begin{itemize}
 \item When type systems detect legitimate program errors, they help reduce 
