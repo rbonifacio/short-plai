@@ -10,6 +10,7 @@
 \usepackage{syntax}
 \usepackage{bussproofs}
 \usepackage{syntax}
+\usepackage{listings}
 
 \pgfplotsset{compat=newest}
 \usetikzlibrary{shapes.geometric,arrows,fit,matrix,positioning}
@@ -63,6 +64,7 @@ Languages: Application and Interpretation}
 %include preface.lhs
 %include c2/c2.lhs
 %include c3/c3.lhs
+%include c4/c4.lhs
 %include c5/ctypes.lhs
 
 \end{document}

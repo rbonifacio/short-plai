@@ -18,7 +18,7 @@ Prelude> (\x -> 3) (head [])
 3
 \end{verbatim}
 
-The expression (\ x-> 3) uses Haskell's notation for
+The expression $(\ x-> 3)$ uses Haskell's notation for
 defining an anonymous procedure. Which in a language
 that adopts the eager strategy of evaluation, such as
 Scheme, would result in an error. Instead Haskell
@@ -53,7 +53,7 @@ Haskell does not evaluate the second argument to : until
 necessary. When it does evaluate it, there is a definition
 avaliable for \texttt{ones:} namely, a 1 followed by ...
 The result is therefore an infinite list, but only the act
-of examining the list actually canstructs any prefix of it.
+of examining the list actually constructs any prefix of it.
 
 How do we examine an infinite list? Consider a function such as this:
 
@@ -74,7 +74,7 @@ F4LAE> front 10 ones
 [1,1,1,1,1,1,1,1,1,1]
 \end{verbatim}
 
----\textit{but no more}. Because the language does nor force
+\noindent ---\textit{but no more}. Because the language does nor force
 \texttt{front} to evaluate its arguments until necessary,
 Haskell does not construct any more of \texttt{ones} than is
 needed for \texttt{front} to determine. That is, it is the act
@@ -145,7 +145,7 @@ F4LAE> timeBonuses ["Lance", "Jan", "Tyler", "Roberto", "Iban"]
 [("Lance", 20), ("Jan", 12), ("Tyler", 8), ("Roberto", 0), ("Iban", 0)]
 \end{verbatim}
 
-where ("Lance", 20) is an anonymous tuple of two elements, the first
+\noindent where ("Lance", 20) is an anonymous tuple of two elements, the first
 projection a string and the second a number. Note that the result is
 therefore a list of two-tuples (or pairs), where the heterogeneity
 of lists force each tuple to be of the same type (a string in the
@@ -162,7 +162,7 @@ brutal stage! First lets create a list of all bonuses:
 [20, 12, 8] ++ cycle [0]
 \end{verbatim}
 
-where ++ appends lists. We can check that this list's content
+\noindent where ++ appends lists. We can check that this list's content
 matches our intuition:
 
 \begin{verbatim}
@@ -184,7 +184,7 @@ the empty list; we can ignore the second argument. In contrast, if
 there is a finisher, we want to assign him the next avaliable time
 bonus:
 
-\begin{varbatim}
+\begin{verbatim}
 tB (f:fs) (b:bs) = (f,b) : tB fs bs
 \end{verbatim}
 
@@ -407,7 +407,7 @@ interp (App n a) ds decs =
 
 The interpretation of a lambda abstraction is simply a closure. It cannot
 be interpreted into a numeric value until a argument is applyed! Much like
-\texttt{(\\x->x+1)}.
+$(\ x->x+1)$.
 
 \begin{code}
 interp(Lambda farg body) ds decs = Closure farg body ds
@@ -415,7 +415,7 @@ interp(Lambda farg body) ds decs = Closure farg body ds
 
 When wew apply an argument to a lambda abstraction it becomes a lambda
 application, and can now be interpreted into a numeric value. Completing the
-example above \texttt{(\\x->x+1)2}, can now be interpreted into \texttt{3}!
+example above $(\ x->x+1)2$, can now be interpreted into $3$!
 Following this line of thinking, observe:
 
 \begin{code}
@@ -451,8 +451,8 @@ F3LAE> interp (Let "x"(Add(Num 3)(Num 5))(Add(Ref "x")(Ref "x")))[][]
 NumValue 16
 \end{verbatim}
 
-\begin{exercise}
+\begin{Exercise}
 Extend the Haskell interpreter to implement functions using Haskell functions
 to represent functions in the interpreted language. Ensure that the interpreted
 language evaluates under an eager, not lazy, regime.
-\end{exercise}
+\end{Exercise}
