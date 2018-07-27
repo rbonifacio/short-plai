@@ -1,6 +1,6 @@
 \documentclass{book}
 
-%include polycode.fmt 
+%include polycode.fmt
 %options ghci -fglasgow-exts
 
 \usepackage{xspace}
@@ -50,8 +50,8 @@
 
 \input{definition.tex}
 
-\title{A Short Introduction to Programming 
-Languages: Application and Interpretation} 
+\title{A Short Introduction to Programming
+Languages: Application and Interpretation}
 
 \author{Rodrigo Bonif\'{a}cio, Luisa Fantin, Gabriel Lob\~{a}o, and Jo\~{a}o Sousa}
 
@@ -62,7 +62,7 @@ Languages: Application and Interpretation}
 
 %include preface.lhs
 %include c2/c2.lhs
-%include c3/c3.lhs 
-%include ctypes/ctypes.lhs
+%include c3/c3.lhs
+%include c5/ctypes.lhs
 
 \end{document}

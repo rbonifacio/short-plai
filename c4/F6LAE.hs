@@ -1,4 +1,4 @@
-module F5LAE where
+module F6LAE where
 
 import Prelude hiding (lookup)
 
@@ -15,7 +15,7 @@ data Type = TInt | TBool | TFunc Type Type | TError
 data FunDec = FunDec Name FormalArg Exp
      deriving(Show, Eq)
 
--- | The abstract syntax of F5LAE
+-- | The abstract syntax of F6LAE
 data Exp = Num Integer
          | Bool Bool
          | Add Exp Exp
@@ -35,7 +35,7 @@ type DefrdSub = [(Id, Value)]
 
 -- | The value data type.
 --
--- In this language (F5LAE), an expression
+-- In this language (F6LAE), an expression
 -- is reduced to a value: either a number or
 -- a closure. A closure is a lambda expression
 -- that *closes* together its definition with the
