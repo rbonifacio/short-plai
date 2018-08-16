@@ -1,6 +1,6 @@
+
 pdf: lhs
-	pdflatex PLAI.tex 
+	pdflatex PLAI.tex
 
 lhs:
 	/Users/rbonifacio/Library/Haskell/bin/lhs2tex -o PLAI.tex PLAI.lhs
-
