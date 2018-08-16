@@ -1,7 +1,7 @@
 \section{Implementing Laziness}
 
 Now that we've seen laziness at work and finished our implementation
-using eager, we're ready to study the implementation of laziness. That is,
+using eager, we are ready to study the implementation of laziness. That is,
 we will keep the \textit{syntax} of our language unchanged, but alter the
 \textit{semantics} of function application to be lazy.
 
@@ -10,8 +10,8 @@ we will keep the \textit{syntax} of our language unchanged, but alter the
 Consider the following expression:
 
 \begin{verbatim}
-  let x = 4+5
-    in let y = x+x
+  let x = 4 + 5
+    in let y = x + x
       in let z = y
         in let x = 4
           in z
@@ -22,58 +22,58 @@ the named expression of a \texttt{let}--- does not get evaluated until use.
 Therefore, we can naively think of the expression above reducing as follows.
 
 \begin{verbatim}
-  let x = 4+5
-    in let y = x+x
+  let x = 4 + 5
+    in let y = x + x
       in let z = y
         in let x = 4
           in z
-  = let y = x+x
+  = let y = x + x
       in let x = 4
         in let z = y
-          in z      [x -> 4+5]
+          in z      [x -> 4 + 5]
   = let x = 4
       in let z = y
-        in z        [x -> 4+5, y -> x+x]
+        in z        [x -> 4 + 5, y -> x + x]
   = let z = y
-      in z          [x -> 4, y -> x+x]
-  = z               [x -> 4, y -> x+x, z -> y]
-  = y               [x -> 4, y -> x+x, z -> y]
-  = x+x             [x -> 4, y -> x+x, z -> y]
-  = 4+4             [x -> 4, y -> x+x, z -> y]
+      in z          [x -> 4, y -> x + x]
+  = z               [x -> 4, y -> x + x, z -> y]
+  = y               [x -> 4, y -> x + x, z -> y]
+  = x + x           [x -> 4, y -> x + x, z -> y]
+  = 4 + 4           [x -> 4, y -> x + x, z -> y]
   = 8
 \end{verbatim}
 
-In contrast, suppose we used substituition instead of environments:
+In contrast, suppose we used substitution instead of environments:
 
 \begin{verbatim}
-  let x = 4+5
-    in let y = x+x
+  let x = 4 + 5
+    in let y = x + x
       in let z = y
         in let x = 4
           in z
-  = let y = (4+5)+(4+5)
+  = let y = (4+5) + (4+5)
       in let z = y
         in let x = 4
           in z
-  = let z = (4+5)+(4+5)
+  = let z = (4+5) + (4+5)
       in let x = 4
         in z
   = let x = 4
-      in (4+5)+(4+5)
-  =(4+5)+(4+5)
-  = 9+9
+      in (4+5) + (4+5)
+  =(4+5) + (4+5)
+  = 9 + 9
   = 18
 \end{verbatim}
 
-We perform substituition, which means we replace identifiers whenever we
-encounter bindings for them, but we don't replace them only with values:
-sometimes we replace them with entire \textit{expressions}. Those expressions
-have themselves already had all identifiers substituited.
+In this case, substitution means the replacement of identifiers whenever
+bindings are encountered for them, but sometimes the identifiers are not replaced only with values,
+they are replace them with entire \textit{expressions} instead. Those expressions
+have themselves already had all identifiers substituted.
 
-This situation should look very familiar: this is the very same problem we
-encountered when switching from substituition to environments. Substituition
+This situation should look familiar: this is the very same problem we
+encountered when switching from substitution to environments. Substitution
 \textit{defines} a program's value; because environments merely defer
-substituition, they should not change value.
+substitution, they should not change value.
 
 We address this problem before using closures. That is, the text of a function
 was closed over (i.e., wrapped in a structure containing) its environment at
@@ -83,7 +83,7 @@ expressions that are not immediately reduced to values, so their environments
 can be used when the reduction to a value actually happens.
 
 We shall refer to these new kinds of values as \textit{expression closures}.
-Since they can be the ressult of evaluating an expression (as we will soon see),
+Since they can be the result of evaluating an expression (as we will soon see),
 it makes sense to extend the set of values with this new kind of value. We will
 also assume that our language has conditionals (since they help illustrate
 some interesting points about laziness). Thus we will define the F6LAE with
@@ -119,9 +119,9 @@ data Value = NumValue Integer
 That is, a ExpV is just a wrapper that holds an expression and the environment
 of this definition.
 
-What needs to change interpreter? Obviously, procedure application must change.
+What needs to change interpreter? Procedure application must change.
 By definition, we should not evaluate the argument expression; furthermore, to
-preserve static scope, we should close it over its environmet:\footnote{The
+preserve static scope, we should close it over its environment:\footnote{The
 argument expression results in an expression closure, which we then bind to
 the function's formal parameter. Since parameters are bound to values, it
 becomes natural to regard the expression closure as a kind of value.}
@@ -157,7 +157,7 @@ procedure cannot handle these: it (and similarly any other arithmetic
 primitive) needs to know exactly which number the expression closure
 corresponds to. The interpreter must therefore "force" the expression closure
 to reduce to an actual value. Indeed, we must do so in other positions as well:
-the functionposition of an application, for instance, needs to know which
+the function position of an application, for instance, needs to know which
 procedure to invoke. If we do not force evaluation at these points, then even
 a simple expression such as
 
@@ -213,12 +213,12 @@ halting with an error ($x$ has not been declared). In contrast, our interpreter
 yields the value $4$.
 
 There is actually one more strictness point in our language: the evaluation of
-the conditional. It needsto know the precise value that the test expression
+the conditional. It needs to know the precise value that the test expression
 evaluates to so it can determine which branch to proceed evaluating. This
 highlights a benefit of studying languages through interpreters: assuming we
 had good test cases, we would quickly discover this problem. (In practice, we
 might bury the strictness requirement in a helper function such as $num-zero?$,
 just as the arithmetic primitives' strictness is buried in the procedures such
-as $Add$. We therefore need to trace which ecpression evaluations invoke
+as $Add$. We therefore need to trace which expression evaluations invoke
 \textit{strict} primitives to truly understand the language's strictness
 positions.)
